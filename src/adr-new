@@ -48,6 +48,10 @@ eval "$($(dirname $0)/adr-config)"
 ##
 ##     adr new -s 3 -s 4 -l "5:Amends:Amended by" Use Riak CRDTs to cope with scale
 ##
+## To create a a new ADR inside a subdirectory, use the relative path from your ADR
+## directory, e.g.:
+##
+##     adr new path/to/subdirectory/Use MySQL Database
 
 superceded=()
 links=()
@@ -89,6 +93,14 @@ if [ -z "$title" ]
 then
     echo ERROR: no title given
     exit 1
+fi
+
+last_slash_pos=${title##*/}
+if [ "$last_slash_pos" != "$title" ]
+then
+    subdir="${title%/*}"
+    dstdir="$dstdir/$subdir"
+    title="${title##*/}"
 fi
 
 if [ -d $dstdir ]
